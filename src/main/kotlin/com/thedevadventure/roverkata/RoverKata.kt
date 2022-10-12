@@ -1,6 +1,6 @@
 package com.thedevadventure.roverkata
 
-import java.util.Scanner
+import java.util.*
 
 fun main() {
     val scanner = Scanner(System.`in`)
@@ -14,8 +14,11 @@ fun main() {
 
 //    Get and validate the locations of the rovers
     println("Please enter the first rovers coordinates, starting with X hitting enter and then Y...")
-    val firstRoverLocation = Location(scanner.nextInt(),scanner.nextInt())
+    val firstRoverLocation = Location(scanner.nextInt(), scanner.nextInt())
     validateTheRoverHasLanded(marsTerrain, firstRoverLocation)
+
+//    Get Rover Instructions
+    val firstRoverCommands = getRoverCommands(scanner)
 }
 
 fun validatePlateau(plateauDimensions: Plateau): Boolean {
@@ -36,5 +39,21 @@ fun validateTheRoverHasLanded(plateau: Plateau, location: Location): Boolean {
     }
 }
 
+fun validateRoverCommands(commands: String): Instructions {
+    if (!commands.uppercase().all { it.isLetter().and(it == 'N' || it == 'S' || it == 'W' || it == 'E') }) {
+        throw  Exception("Computer says No!")
+    }
+    val roverCommands = Instructions(commands.uppercase())
+    println("Commands received: ${roverCommands.roverCommands}...")
+    return roverCommands
+}
+
+fun getRoverCommands(scanner: Scanner): Instructions{
+    println("Please enter the command sequence for the first rover... valid inputs are limited to N, E, W, and S! ")
+    val roverCommands = scanner.next()
+    return validateRoverCommands(roverCommands)
+}
+
 data class Plateau(val X: Int, val Y: Int)
 data class Location(val X: Int, val Y: Int)
+data class Instructions(val roverCommands: String) {}

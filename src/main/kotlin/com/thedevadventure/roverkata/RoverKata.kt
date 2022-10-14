@@ -58,7 +58,7 @@ fun getRoverCommands(scanner: Scanner): Instructions {
 fun explore(startingLocation: Location, roverInstructions: Instructions): Location {
 
     val location = startingLocation
-    val instructions = roverInstructions.roverCommands.map {it}
+    val instructions = roverInstructions.roverCommands.map { it }
     fun move(input: Char) {
         when (input) {
             'N' -> location.incY()
@@ -68,28 +68,28 @@ fun explore(startingLocation: Location, roverInstructions: Instructions): Locati
         }
     }
 
-        println("The InstructionsMap: $instructions")
-        instructions.forEach {move(it) }
-        return location
+    println("The InstructionsMap: $instructions")
+    instructions.forEach { move(it) }
+    return location
 }
 
-    data class Plateau(val X: Int, val Y: Int)
-    data class Location(var X: Int, var Y: Int) {
-        fun incX() {
-            X += 1
-        }
-
-        fun incY() {
-            Y += 1
-        }
-
-        fun decX() {
-            X -= 1
-        }
-
-        fun decY() {
-            Y -= 1
-        }
+data class Plateau(val X: Int, val Y: Int)
+data class Location(var X: Int, var Y: Int) {
+    fun incX() {
+        X += 1
     }
 
-    data class Instructions(val roverCommands: String)
+    fun incY() {
+        Y += 1
+    }
+
+    fun decX() {
+        X -= 1
+    }
+
+    fun decY() {
+        Y -= 1
+    }
+}
+
+data class Instructions(val roverCommands: String)

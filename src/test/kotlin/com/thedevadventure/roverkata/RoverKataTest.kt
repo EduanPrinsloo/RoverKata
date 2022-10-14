@@ -82,5 +82,15 @@ internal class RoverKataTest {
         assertEquals(expected, result)
     }
 
+    @Test
+    fun `should return the new location if the rover gets an instruction to move North and then East starting from 00`(){
+        val startingLocation = Location(0,0)
+        val instructions = Instructions("NE")
+        val expected = Location(1,1)
+        val result = explore(startingLocation, instructions)
+        assertEquals(expected, result)
+    }
+
+
 
 }

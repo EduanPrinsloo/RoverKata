@@ -19,7 +19,7 @@ fun main() {
 
 //    Get Rover Instructions
     val firstRoverCommands = getRoverCommands(scanner)
-    explore(firstRoverLocation,firstRoverCommands)
+    explore(firstRoverLocation, firstRoverCommands)
 }
 
 fun validatePlateau(plateauDimensions: Plateau): Boolean {
@@ -42,7 +42,7 @@ fun validateTheRoverHasLanded(plateau: Plateau, location: Location): Boolean {
 
 fun validateRoverCommands(commands: String): Instructions {
     if (!commands.uppercase().all { it.isLetter().and(it == 'N' || it == 'S' || it == 'W' || it == 'E') }) {
-        throw  Exception("Computer says No!")
+        throw Exception("Computer says No!")
     }
     val roverCommands = Instructions(commands.uppercase())
     println("Commands received: ${roverCommands.roverCommands}...")
@@ -56,15 +56,40 @@ fun getRoverCommands(scanner: Scanner): Instructions {
 }
 
 fun explore(startingLocation: Location, roverInstructions: Instructions): Location {
-    val instructions = roverInstructions.roverCommands.map { it }
-    println("The InstructionsMap: $instructions")
 
-    if (instructions[0] == 'N') {
-         return Location(startingLocation.X, startingLocation.Y + 1)
+    val location = startingLocation
+    val instructions = roverInstructions.roverCommands.map {it}
+    fun move(input: Char) {
+        when (input) {
+            'N' -> location.incY()
+            'E' -> location.incX()
+            'S' -> location.decY()
+            'W' -> location.decX()
+        }
     }
-    return startingLocation
+
+        println("The InstructionsMap: $instructions")
+        instructions.forEach {move(it) }
+        return location
 }
 
-data class Plateau(val X: Int, val Y: Int)
-data class Location(val X: Int, val Y: Int)
-data class Instructions(val roverCommands: String)
+    data class Plateau(val X: Int, val Y: Int)
+    data class Location(var X: Int, var Y: Int) {
+        fun incX() {
+            X += 1
+        }
+
+        fun incY() {
+            Y += 1
+        }
+
+        fun decX() {
+            X -= 1
+        }
+
+        fun decY() {
+            Y -= 1
+        }
+    }
+
+    data class Instructions(val roverCommands: String)

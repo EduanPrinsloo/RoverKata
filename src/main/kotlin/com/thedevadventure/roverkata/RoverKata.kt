@@ -19,6 +19,7 @@ fun main() {
 
 //    Get Rover Instructions
     val firstRoverCommands = getRoverCommands(scanner)
+    explore(firstRoverLocation,firstRoverCommands)
 }
 
 fun validatePlateau(plateauDimensions: Plateau): Boolean {
@@ -48,12 +49,22 @@ fun validateRoverCommands(commands: String): Instructions {
     return roverCommands
 }
 
-fun getRoverCommands(scanner: Scanner): Instructions{
+fun getRoverCommands(scanner: Scanner): Instructions {
     println("Please enter the command sequence for the first rover... valid inputs are limited to N, E, W, and S! ")
     val roverCommands = scanner.next()
     return validateRoverCommands(roverCommands)
 }
 
+fun explore(startingLocation: Location, roverInstructions: Instructions): Location {
+    val instructions = roverInstructions.roverCommands.map { it }
+    println("The InstructionsMap: $instructions")
+
+    if (instructions[0] == 'N') {
+         return Location(startingLocation.X, startingLocation.Y + 1)
+    }
+    return startingLocation
+}
+
 data class Plateau(val X: Int, val Y: Int)
 data class Location(val X: Int, val Y: Int)
-data class Instructions(val roverCommands: String) {}
+data class Instructions(val roverCommands: String)

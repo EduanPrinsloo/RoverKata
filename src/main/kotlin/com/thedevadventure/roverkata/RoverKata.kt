@@ -19,7 +19,7 @@ fun main() {
 
 //    Get Rover Instructions
     val firstRoverCommands = getRoverCommands(scanner)
-    explore(firstRoverLocation, firstRoverCommands)
+    explore(marsTerrain, firstRoverLocation, firstRoverCommands)
 }
 
 fun validatePlateau(plateauDimensions: Plateau): Boolean {
@@ -55,39 +55,46 @@ fun getRoverCommands(scanner: Scanner): Instructions {
     return validateRoverCommands(roverCommands)
 }
 
-fun explore(startingLocation: Location, roverInstructions: Instructions): Location {
+fun explore(plateau: Plateau, startingLocation: Location, roverInstructions: Instructions): Location {
 
     val location = startingLocation
     val instructions = roverInstructions.roverCommands.map { it }
-    fun move(input: Char) {
-        when (input) {
-            'N' -> location.incY()
-            'E' -> location.incX()
-            'S' -> location.decY()
-            'W' -> location.decX()
+    fun move(input: Char): Location {
+        when (input.uppercaseChar()) {
+            'N' -> location.increaseY()
+            'E' -> location.increaseX()
+            'S' -> location.decreaseY()
+            'W' -> location.decreaseX()
         }
+        return location
+    }
+
+    fun isValidRoverPosition(currentLocation: Location, plateau: Plateau): Boolean {
+        if ((currentLocation.X > plateau.X || currentLocation.X < 0) || (currentLocation.Y > plateau.Y || currentLocation.Y < 0)) {
+            throw Exception("Mission failed... The rover moered off, at $currentLocation...")
+        } else return true
     }
 
     println("The InstructionsMap: $instructions")
-    instructions.forEach { move(it) }
+    instructions.forEach { it -> val result = move(it); isValidRoverPosition(result, plateau); instructions.map { it } }
     return location
 }
 
 data class Plateau(val X: Int, val Y: Int)
 data class Location(var X: Int, var Y: Int) {
-    fun incX() {
+    fun increaseX() {
         X += 1
     }
 
-    fun incY() {
+    fun increaseY() {
         Y += 1
     }
 
-    fun decX() {
+    fun decreaseX() {
         X -= 1
     }
 
-    fun decY() {
+    fun decreaseY() {
         Y -= 1
     }
 }

@@ -75,20 +75,44 @@ internal class RoverKataTest {
 
     @Test
     fun `should return the new location if the rover gets an instruction to move North starting from 00`() {
+        val plateau = Plateau(1, 1)
         val startingLocation = Location(0, 0)
         val instructions = Instructions("N")
         val expected = Location(0, 1)
-        val result = explore(startingLocation, instructions)
+        val result = explore(plateau, startingLocation, instructions)
         assertEquals(expected, result)
     }
 
     @Test
-    fun `should return the new location if the rover gets an instruction to move North and then East starting from 00`() {
+    fun `should return the new location if the rover gets instructions to move North and then East starting from 00`() {
+        val plateau = Plateau(1, 1)
         val startingLocation = Location(0, 0)
         val instructions = Instructions("NE")
         val expected = Location(1, 1)
-        val result = explore(startingLocation, instructions)
+        val result = explore(plateau, startingLocation, instructions)
         assertEquals(expected, result)
+    }
+
+    @Test
+    fun `should return the new location if the rover gets instructions to move 2 North and 2 East starting from 00 ignoring case`() {
+        val plateau = Plateau(2, 2)
+        val startingLocation = Location(0, 0)
+        val instructions = Instructions("NeeN")
+        val expected = Location(2, 2)
+        val result = explore(plateau, startingLocation, instructions)
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `should throw an error if the rover falls of the plateau and the location`() {
+        try {
+            val plateau = Plateau(3, 3)
+            val startingLocation = Location(2, 2)
+            val instructions = Instructions("NEE")
+            explore(plateau, startingLocation, instructions)
+        } catch (e: Exception) {
+            assertEquals("Mission failed... The rover moered off, at Location(X=4, Y=3)...", e.message)
+        }
     }
 
 

@@ -81,7 +81,7 @@ fun move(input: Char, location: Location): Location {
 
 fun isValidRoverPosition(currentLocation: Location, plateau: Plateau): Boolean {
     if ((currentLocation.X > plateau.X || currentLocation.X < 0) || (currentLocation.Y > plateau.Y || currentLocation.Y < 0)) {
-        throw Exception("Mission failed... The rover moered off, at $currentLocation...")
+        throw Exception("Mission failed... The rover was lost at $currentLocation...")
     } else return true
 }
 

@@ -111,12 +111,12 @@ internal class RoverKataTest {
             val instructions = Instructions("NEE")
             explore(plateau, startingLocation, instructions)
         } catch (e: Exception) {
-            assertEquals("Mission failed... The rover moered off, at Location(X=4, Y=3)...", e.message)
+            assertEquals("Mission failed... The rover was lost at Location(X=4, Y=3)...", e.message)
         }
     }
 
     @Test
-    fun `should return a map of all point on the rover path`(){
+    fun `should return a list of all point on a single rover path`(){
         val plateau = Plateau(5, 5)
         val startingLocation = Location(2, 2)
         val instructions = Instructions("NNN")

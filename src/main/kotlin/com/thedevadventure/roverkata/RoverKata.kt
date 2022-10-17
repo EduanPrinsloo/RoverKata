@@ -68,6 +68,7 @@ fun explore(plateau: Plateau, startingLocation: Location, roverInstructions: Ins
     val instructions = roverInstructions.roverCommands.map { it }
     val pathPoints = mutableListOf<Location>()
     var currentLocation = startingLocation
+    pathPoints.add(startingLocation)
     for (instruction in instructions) {
         val result = move(instruction, currentLocation)
         isValidRoverPosition(result, plateau)
@@ -112,7 +113,7 @@ fun decreaseY(location: Location): Location {
 fun checkIntersections(pathPoints1: List<Location>, pathPoints2: List<Location>): MutableList<Location> {
     val intersections = pathPoints1.intersect(pathPoints2.toSet()).toMutableList()
     if (intersections.isEmpty()) {
-        println("No Intersections found...")
+        throw Exception("No Intersections found...")
     } else {
         println("Intersection point are: $intersections")
     }

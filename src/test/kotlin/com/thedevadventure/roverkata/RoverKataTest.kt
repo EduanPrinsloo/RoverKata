@@ -78,7 +78,7 @@ internal class RoverKataTest {
         val plateau = Plateau(1, 1)
         val startingLocation = Location(0, 0)
         val instructions = Instructions("N")
-        val expected = Location(0, 1)
+        val expected = listOf(Location(0, 1))
         val result = explore(plateau, startingLocation, instructions)
         assertEquals(expected, result)
     }
@@ -88,7 +88,7 @@ internal class RoverKataTest {
         val plateau = Plateau(1, 1)
         val startingLocation = Location(0, 0)
         val instructions = Instructions("NE")
-        val expected = Location(1, 1)
+        val expected = listOf(Location(0, 1), Location(1, 1))
         val result = explore(plateau, startingLocation, instructions)
         assertEquals(expected, result)
     }
@@ -98,7 +98,7 @@ internal class RoverKataTest {
         val plateau = Plateau(2, 2)
         val startingLocation = Location(0, 0)
         val instructions = Instructions("NeeN")
-        val expected = Location(2, 2)
+        val expected = listOf(Location(0,1), Location(1, 1), Location(2, 1), Location(2, 2))
         val result = explore(plateau, startingLocation, instructions)
         assertEquals(expected, result)
     }
@@ -115,5 +115,15 @@ internal class RoverKataTest {
         }
     }
 
+    @Test
+    fun `should return a map of all point on the rover path`(){
+        val plateau = Plateau(5, 5)
+        val startingLocation = Location(2, 2)
+        val instructions = Instructions("NNN")
+
+        val expected = listOf(Location(X=2, Y=3), Location(X=2, Y=4),Location(X=2, Y=5))
+        val result = explore(plateau,startingLocation,instructions)
+        assertEquals(expected, result)
+    }
 
 }

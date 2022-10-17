@@ -17,7 +17,7 @@ fun main() {
     val firstRoverLocation = Location(scanner.nextInt(), scanner.nextInt())
     validateTheRoverHasLanded(marsTerrain, firstRoverLocation)
 
-//    Get Rover Instructions
+//    Get rover instructions and explore
     val firstRoverCommands = getRoverCommands(scanner)
     explore(marsTerrain, firstRoverLocation, firstRoverCommands)
 }
@@ -55,48 +55,52 @@ fun getRoverCommands(scanner: Scanner): Instructions {
     return validateRoverCommands(roverCommands)
 }
 
-fun explore(plateau: Plateau, startingLocation: Location, roverInstructions: Instructions): Location {
-
-    val location = startingLocation
+fun explore(plateau: Plateau, startingLocation: Location, roverInstructions: Instructions): MutableList<Location> {
     val instructions = roverInstructions.roverCommands.map { it }
-    fun move(input: Char): Location {
-        when (input.uppercaseChar()) {
-            'N' -> location.increaseY()
-            'E' -> location.increaseX()
-            'S' -> location.decreaseY()
-            'W' -> location.decreaseX()
-        }
-        return location
-    }
+    val pathPoints = mutableListOf<Location>()
+    var currentLocation = startingLocation
 
-    fun isValidRoverPosition(currentLocation: Location, plateau: Plateau): Boolean {
-        if ((currentLocation.X > plateau.X || currentLocation.X < 0) || (currentLocation.Y > plateau.Y || currentLocation.Y < 0)) {
-            throw Exception("Mission failed... The rover moered off, at $currentLocation...")
-        } else return true
+    for (ins in instructions) {
+        val result = move(ins, currentLocation)
+        isValidRoverPosition(result, plateau)
+        pathPoints.add(result)
+        currentLocation = result
     }
+    return pathPoints
+}
 
-    println("The InstructionsMap: $instructions")
-    instructions.forEach { it -> val result = move(it); isValidRoverPosition(result, plateau); instructions.map { it } }
-    return location
+fun move(input: Char, location: Location): Location {
+    return when (input.uppercaseChar()) {
+        'N' -> increaseY(location)
+        'E' -> increaseX(location)
+        'S' -> decreaseY(location)
+        'W' -> decreaseX(location)
+        else -> location
+    }
+}
+
+fun isValidRoverPosition(currentLocation: Location, plateau: Plateau): Boolean {
+    if ((currentLocation.X > plateau.X || currentLocation.X < 0) || (currentLocation.Y > plateau.Y || currentLocation.Y < 0)) {
+        throw Exception("Mission failed... The rover moered off, at $currentLocation...")
+    } else return true
+}
+
+fun increaseX(location: Location): Location {
+    return Location(location.X + 1, location.Y)
+}
+
+fun increaseY(location: Location): Location {
+    return Location(location.X, location.Y + 1)
+}
+
+fun decreaseX(location: Location): Location {
+    return Location(location.X - 1, location.Y)
+}
+
+fun decreaseY(location: Location): Location {
+    return Location(location.X, location.Y - 1)
 }
 
 data class Plateau(val X: Int, val Y: Int)
-data class Location(var X: Int, var Y: Int) {
-    fun increaseX() {
-        X += 1
-    }
-
-    fun increaseY() {
-        Y += 1
-    }
-
-    fun decreaseX() {
-        X -= 1
-    }
-
-    fun decreaseY() {
-        Y -= 1
-    }
-}
-
+data class Location(val X: Int, val Y: Int)
 data class Instructions(val roverCommands: String)

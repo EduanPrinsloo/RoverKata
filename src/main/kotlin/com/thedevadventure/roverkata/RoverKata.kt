@@ -15,11 +15,20 @@ fun main() {
 //    Get and validate the locations of the rovers
     println("Please enter the first rovers coordinates, starting with X hitting enter and then Y...")
     val firstRoverLocation = Location(scanner.nextInt(), scanner.nextInt())
-    validateTheRoverHasLanded(marsTerrain, firstRoverLocation)
-
-//    Get rover instructions and explore
     val firstRoverCommands = getRoverCommands(scanner)
+
+    println("Please enter the second rovers coordinates, starting with X hitting enter and then Y...")
+    val secondRoverLocation = Location(scanner.nextInt(), scanner.nextInt())
+    val secondRoverCommands = getRoverCommands(scanner)
+
+    validateTheRoverHasLanded(marsTerrain, firstRoverLocation)
+    validateTheRoverHasLanded(marsTerrain, secondRoverLocation)
     explore(marsTerrain, firstRoverLocation, firstRoverCommands)
+    explore(marsTerrain, secondRoverLocation, secondRoverCommands)
+    checkIntersections(
+        explore(marsTerrain, firstRoverLocation, firstRoverCommands),
+        explore(marsTerrain, secondRoverLocation, secondRoverCommands)
+    )
 }
 
 fun validatePlateau(plateauDimensions: Plateau): Boolean {
@@ -59,9 +68,8 @@ fun explore(plateau: Plateau, startingLocation: Location, roverInstructions: Ins
     val instructions = roverInstructions.roverCommands.map { it }
     val pathPoints = mutableListOf<Location>()
     var currentLocation = startingLocation
-
-    for (ins in instructions) {
-        val result = move(ins, currentLocation)
+    for (instruction in instructions) {
+        val result = move(instruction, currentLocation)
         isValidRoverPosition(result, plateau)
         pathPoints.add(result)
         currentLocation = result
@@ -99,6 +107,16 @@ fun decreaseX(location: Location): Location {
 
 fun decreaseY(location: Location): Location {
     return Location(location.X, location.Y - 1)
+}
+
+fun checkIntersections(pathPoints1: List<Location>, pathPoints2: List<Location>): MutableList<Location> {
+    val intersections = pathPoints1.intersect(pathPoints2.toSet()).toMutableList()
+    if (intersections.isEmpty()) {
+        println("No Intersections found...")
+    } else {
+        println("Intersection point are: $intersections")
+    }
+    return intersections
 }
 
 data class Plateau(val X: Int, val Y: Int)

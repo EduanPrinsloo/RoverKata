@@ -98,7 +98,7 @@ internal class RoverKataTest {
         val plateau = Plateau(2, 2)
         val startingLocation = Location(0, 0)
         val instructions = Instructions("NeeN")
-        val expected = listOf(Location(0,1), Location(1, 1), Location(2, 1), Location(2, 2))
+        val expected = listOf(Location(0, 1), Location(1, 1), Location(2, 1), Location(2, 2))
         val result = explore(plateau, startingLocation, instructions)
         assertEquals(expected, result)
     }
@@ -116,14 +116,35 @@ internal class RoverKataTest {
     }
 
     @Test
-    fun `should return a list of all point on a single rover path`(){
+    fun `should return a list of all point on a single rover path`() {
         val plateau = Plateau(5, 5)
         val startingLocation = Location(2, 2)
         val instructions = Instructions("NNN")
 
-        val expected = listOf(Location(X=2, Y=3), Location(X=2, Y=4),Location(X=2, Y=5))
-        val result = explore(plateau,startingLocation,instructions)
+        val expected = listOf(Location(2, 3), Location(2, 4), Location(2, 5))
+        val result = explore(plateau, startingLocation, instructions)
         assertEquals(expected, result)
     }
+
+    @Test
+    fun `should return all locations where 2 rover paths intersect`() {
+        val plateau = Plateau(3, 3)
+        val startingLocationOfFirstRover = Location(0, 0)
+        val instructionsOfFirstRover = Instructions("NENENE")
+//        val expectedLocationsOfFirstRover = listOf(Location(0,1), Location(1, 1),Location(1,2),Location(2,2), Location(2, 3),Location(3,3))
+        val resultOfFirstRover = explore(plateau, startingLocationOfFirstRover, instructionsOfFirstRover)
+//        assertEquals(expectedLocationsOfFirstRover, resultOfFirstRover)
+
+        val startingLocationOfSecondRover = Location(3, 0)
+        val instructionsOfOfSecondRover = Instructions("NWNWNW")
+//        val expectedLocationsOfSecondRover = listOf(Location(3, 1), Location(2, 1),Location(2,2), Location(1, 2),Location(1,3), Location(0, 3))
+        val resultOfSecondRover = explore(plateau, startingLocationOfSecondRover, instructionsOfOfSecondRover)
+//        assertEquals(expectedLocationsOfSecondRover, resultOfSecondRover)
+
+        val expectedIntersectionPoints = listOf(Location(1, 2), Location(2, 2))
+        val resultingIntersectionPoints = checkIntersections(resultOfFirstRover, resultOfSecondRover)
+        assertEquals(expectedIntersectionPoints, resultingIntersectionPoints)
+    }
+
 
 }

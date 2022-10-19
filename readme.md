@@ -28,3 +28,13 @@ The output of the program should be the intersection points of the rovers...
 
 ### Your Objectives:
 It is your job to write code in a hardcore TDD fashion that will execute the commands from the inputs and identify the intersection paths of the rovers, you should try not to spend more than 4 hours.
+
+### To Run This Project Locally...
+
+You need The Following On Your Machine:
+ + Gradle 7.3.3
+ + Java 17 - I am using openJDK 17 
+ + Then you will need to follow the gradle build process...
+
+If you are lazy or lucky enough, just use the IntelliJ Community Edition and let the build script take care of the above...
+All you have to do then is click run on the main function in the RoverKata.kt file!
